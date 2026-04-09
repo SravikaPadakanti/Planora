@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="glacier">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Chronicle Calendar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* =====================================================
+   CHRONICLE CALENDAR — Standalone HTML Preview
+   ===================================================== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root,[data-theme="glacier"]{
+  --bg-app:#eef1f5;--bg-card:#fff;--bg-panel:#f7f9fc;--bg-grid:#fff;
+  --bg-header:#0d1f3c;--bg-hero:#0d1f3c;
+  --accent:#2563eb;--accent-light:#60a5fa;--accent-pale:#eff6ff;--accent-dark:#1e40af;
+  --range-start:#2563eb;--range-end:#2563eb;
+  --range-mid:rgba(37,99,235,.12);--range-mid-border:rgba(37,99,235,.25);
+  --text-primary:#0f172a;--text-secondary:#475569;--text-muted:#94a3b8;
+  --text-inverted:#fff;--text-header:#fff;
+  --border:#e2e8f0;--border-strong:#cbd5e1;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.06);
+  --shadow-md:0 4px 16px rgba(0,0,0,.08);
+  --shadow-lg:0 20px 60px rgba(0,0,0,.12);
+  --shadow-xl:0 40px 100px rgba(0,0,0,.18);
+  --sat-color:#dc2626;--sun-color:#dc2626;
+  --today-bg:#fef3c7;--today-color:#92400e;--today-border:#f59e0b;
+  --holiday-color:#7c3aed;--note-dot:#10b981;
+  --spiral-color:#94a3b8;
+  --radius-xs:4px;--radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-xl:28px;
+  --font-display:'Playfair Display',Georgia,serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+  --font-mono:'DM Mono','Fira Code',monospace;
+  --transition:180ms cubic-bezier(.4,0,.2,1);
+  --transition-spring:380ms cubic-bezier(.34,1.56,.64,1);
+}
+[data-theme="ember"]{
+  --bg-app:#1a0a00;--bg-card:#1e1108;--bg-panel:#261508;--bg-grid:#1e1108;
+  --bg-header:#0d0500;--bg-hero:#0d0500;
+  --accent:#f97316;--accent-light:#fb923c;--accent-pale:#431407;--accent-dark:#c2410c;
+  --range-start:#f97316;--range-end:#f97316;
+  --range-mid:rgba(249,115,22,.15);--range-mid-border:rgba(249,115,22,.3);
+  --text-primary:#fef3c7;--text-secondary:#d97706;--text-muted:#92400e;
+  --text-inverted:#0d0500;--text-header:#fef3c7;
+  --border:#431407;--border-strong:#7c2d12;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);
+  --shadow-lg:0 20px 60px rgba(0,0,0,.5);--shadow-xl:0 40px 100px rgba(0,0,0,.6);
+  --sat-color:#fb923c;--sun-color:#fb923c;
+  --today-bg:#431407;--today-color:#fed7aa;--today-border:#f97316;
+  --holiday-color:#fbbf24;--note-dot:#34d399;--spiral-color:#7c2d12;
+}
+[data-theme="forest"]{
+  --bg-app:#0a1a0d;--bg-card:#0f2414;--bg-panel:#132b18;--bg-grid:#0f2414;
+  --bg-header:#051009;--bg-hero:#051009;
+  --accent:#22c55e;--accent-light:#4ade80;--accent-pale:#14532d;--accent-dark:#16a34a;
+  --range-start:#22c55e;--range-end:#22c55e;
+  --range-mid:rgba(34,197,94,.12);--range-mid-border:rgba(34,197,94,.25);
+  --text-primary:#f0fdf4;--text-secondary:#86efac;--text-muted:#4ade80;
+  --text-inverted:#051009;--text-header:#f0fdf4;
+  --border:#14532d;--border-strong:#166534;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);
+  --shadow-lg:0 20px 60px rgba(0,0,0,.5);--shadow-xl:0 40px 100px rgba(0,0,0,.6);
+  --sat-color:#4ade80;--sun-color:#4ade80;
+  --today-bg:#14532d;--today-color:#bbf7d0;--today-border:#22c55e;
+  --holiday-color:#a78bfa;--note-dot:#fb923c;--spiral-color:#166534;
+}
+[data-theme="obsidian"]{
+  --bg-app:#09090b;--bg-card:#111113;--bg-panel:#18181b;--bg-grid:#111113;
+  --bg-header:#000;--bg-hero:#000;
+  --accent:#e4e4e7;--accent-light:#fff;--accent-pale:#27272a;--accent-dark:#a1a1aa;
+  --range-start:#fff;--range-end:#fff;
+  --range-mid:rgba(255,255,255,.06);--range-mid-border:rgba(255,255,255,.12);
+  --text-primary:#fafafa;--text-secondary:#a1a1aa;--text-muted:#52525b;
+  --text-inverted:#000;--text-header:#fafafa;
+  --border:#27272a;--border-strong:#3f3f46;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.5);--shadow-md:0 4px 16px rgba(0,0,0,.6);
+  --shadow-lg:0 20px 60px rgba(0,0,0,.7);--shadow-xl:0 40px 100px rgba(0,0,0,.8);
+  --sat-color:#a1a1aa;--sun-color:#a1a1aa;
+  --today-bg:#27272a;--today-color:#fafafa;--today-border:#e4e4e7;
+  --holiday-color:#a78bfa;--note-dot:#34d399;--spiral-color:#3f3f46;
+}
+
+html{font-size:16px;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-body);background:var(--bg-app);color:var(--text-primary);min-height:100vh;transition:background .4s,color .4s}
+button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
+input,textarea{font-family:inherit}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:3px}
+::selection{background:var(--accent);color:var(--text-inverted)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+@keyframes flipIn{0%{transform:perspective(800px) rotateX(-15deg);opacity:0}100%{transform:perspective(800px) rotateX(0);opacity:1}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 var(--accent)}50%{box-shadow:0 0 0 5px transparent}}
+@keyframes noteDot{0%{transform:scale(0)}60%{transform:scale(1.4)}100%{transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---- App Shell ---- */
+.chr-app{display:flex;flex-direction:column;min-height:100vh;background:var(--bg-app)}
+.chr-topbar{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:0 1.25rem;height:50px;background:var(--bg-card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:30;box-shadow:var(--shadow-sm)}
+.chr-topbar__brand{display:flex;align-items:center;gap:.5rem;color:var(--accent);flex-shrink:0}
+.chr-topbar__brand svg{color:var(--accent)}
+.chr-topbar__name{font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--text-primary);letter-spacing:-.02em}
+.chr-topbar__sub{font-size:.62rem;font-weight:500;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+.chr-topbar__center{flex:1;display:flex;justify-content:center}
+.chr-topbar__selection{display:flex;align-items:center;gap:.5rem;background:var(--accent-pale);border:1px solid var(--range-mid-border);border-radius:20px;padding:3px 10px 3px 9px;animation:scaleIn .2s var(--transition-spring) both}
+.chr-topbar__sel-label{font-size:.73rem;font-weight:600;color:var(--accent)}
+.chr-topbar__sel-hint{font-size:.66rem;color:var(--text-muted)}
+.chr-topbar__sel-clear{width:15px;height:15px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;transition:transform var(--transition)}
+.chr-topbar__sel-clear:hover{transform:scale(1.15)}
+.chr-topbar__actions{display:flex;align-items:center;gap:.5rem;flex-shrink:0}
+.chr-topbar__today-btn{padding:4px 11px;border-radius:var(--radius-xs);background:var(--bg-panel);border:1px solid var(--border);color:var(--text-secondary);font-size:.72rem;font-weight:600;transition:all var(--transition)}
+.chr-topbar__today-btn:hover{border-color:var(--accent);color:var(--accent)}
+.chr-topbar__notes-toggle{position:relative;width:30px;height:30px;border-radius:var(--radius-xs);background:var(--bg-panel);border:1px solid var(--border);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;transition:all var(--transition)}
+.chr-topbar__notes-toggle.active{background:var(--accent-pale);border-color:var(--accent);color:var(--accent)}
+.chr-notes-dot{position:absolute;top:4px;right:4px;width:5px;height:5px;border-radius:50%;background:var(--note-dot)}
+
+/* Theme switcher */
+.theme-sw{position:relative}
+.theme-sw__trigger{display:flex;align-items:center;gap:5px;padding:5px 8px;border-radius:var(--radius-sm);background:var(--bg-panel);border:1px solid var(--border);color:var(--text-secondary);font-size:.72rem;transition:all var(--transition)}
+.theme-sw__trigger:hover{border-color:var(--border-strong);color:var(--text-primary)}
+.theme-sw__dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.theme-sw__backdrop{position:fixed;inset:0;z-index:40}
+.theme-sw__menu{position:absolute;top:calc(100% + 6px);right:0;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-lg);padding:5px;min-width:130px;z-index:50;animation:scaleIn .15s cubic-bezier(.34,1.56,.64,1) both;transform-origin:top right;display:none}
+.theme-sw__menu.open{display:block}
+.theme-sw__menu-title{font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);padding:3px 7px 5px}
+.theme-sw__option{display:flex;align-items:center;gap:7px;width:100%;padding:5px 7px;border-radius:var(--radius-xs);font-size:.76rem;color:var(--text-secondary);transition:all var(--transition)}
+.theme-sw__option:hover{background:var(--bg-panel);color:var(--text-primary)}
+.theme-sw__option.active{color:var(--text-primary);font-weight:600}
+.theme-sw__swatch{width:15px;height:15px;border-radius:50%;flex-shrink:0}
+
+/* ---- Main ---- */
+.chr-main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:1.5rem 1rem 1rem}
+.chr-card{width:100%;max-width:1100px;background:var(--bg-card);border-radius:var(--radius-xl);box-shadow:var(--shadow-xl);overflow:hidden;animation:fadeUp .5s cubic-bezier(.22,1,.36,1) both;border:1px solid var(--border)}
+
+/* ---- Layout ---- */
+.chr-layout{display:grid;grid-template-columns:220px 1fr 220px;min-height:500px}
+
+/* ---- Hero ---- */
+.hero-panel{position:relative;background:var(--bg-hero);overflow:hidden;display:flex;flex-direction:column}
+.hero-spiral{position:absolute;top:0;left:50%;transform:translateX(-50%);width:90%;height:18px;display:flex;align-items:center;justify-content:space-between;z-index:10;pointer-events:none}
+.hero-spiral__ring{width:14px;height:14px;border-radius:50%;border:2.5px solid var(--spiral-color);background:var(--bg-card);box-shadow:0 2px 4px rgba(0,0,0,.3),inset 0 1px 2px rgba(255,255,255,.1);flex-shrink:0}
+.hero-img-wrap{position:relative;flex:1;overflow:hidden;min-height:260px}
+.hero-img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .4s ease}
+.hero-img.loaded{opacity:1}
+.hero-img-skeleton{position:absolute;inset:0;background:linear-gradient(90deg,var(--bg-header) 25%,rgba(255,255,255,.06) 50%,var(--bg-header) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,transparent 55%,rgba(0,0,0,.75) 100%);pointer-events:none}
+.hero-title-block{position:absolute;bottom:0;right:0;padding:.875rem 1.125rem .75rem;text-align:right;z-index:5;clip-path:polygon(18% 0%,100% 0%,100% 100%,0% 100%);background:linear-gradient(135deg,transparent 0%,rgba(0,0,0,.45) 40%,rgba(0,0,0,.72) 100%);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);min-width:150px}
+.hero-year{font-family:var(--font-mono);font-size:.72rem;font-weight:500;letter-spacing:.12em;color:rgba(255,255,255,.55);line-height:1;margin-bottom:2px}
+.hero-month{font-family:var(--font-display);font-size:1.65rem;font-weight:700;color:#fff;line-height:1.1;letter-spacing:-.02em;text-shadow:0 2px 12px rgba(0,0,0,.4)}
+.hero-credit{font-size:.58rem;color:rgba(255,255,255,.38);letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
+.hero-nav{position:absolute;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;display:flex;align-items:center;justify-content:center;transition:background var(--transition),transform 80ms ease;z-index:10;border:1px solid rgba(255,255,255,.15)}
+.hero-nav:hover{background:rgba(255,255,255,.25);transform:translateY(-50%) scale(1.1)}
+.hero-nav--prev{left:.625rem}
+.hero-nav--next{right:.625rem}
+
+/* ---- Center ---- */
+.chr-center{display:flex;flex-direction:column;border-left:1px solid var(--border);border-right:1px solid var(--border)}
+.chr-center__header{display:flex;align-items:center;justify-content:space-between;padding:.875rem .875rem .375rem}
+.chr-center__month-title{display:flex;align-items:baseline;gap:.5rem}
+.chr-center__month{font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--text-primary);letter-spacing:-.02em}
+.chr-center__year{font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted);font-weight:500;letter-spacing:.04em}
+.chr-center__hdr-actions{display:flex;gap:4px}
+.chr-nav-btn{width:27px;height:27px;border-radius:var(--radius-xs);display:flex;align-items:center;justify-content:center;color:var(--text-secondary);background:var(--bg-panel);border:1px solid var(--border);transition:all var(--transition)}
+.chr-nav-btn:hover{border-color:var(--accent);color:var(--accent)}
+.chr-kb-hint{display:flex;align-items:center;gap:.375rem;padding:0 .875rem .3rem;font-size:.6rem;color:var(--text-muted);letter-spacing:.02em;font-family:var(--font-mono)}
+.chr-grid-anim{flex:1;display:flex;flex-direction:column}
+.chr-grid-anim.flip{animation:flipIn .3s cubic-bezier(.22,1,.36,1) both;transform-origin:top center}
+
+/* ---- Calendar Grid ---- */
+.cal-grid-wrapper{padding:0 .75rem .875rem;flex:1}
+.cal-grid-header{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:3px}
+.cal-grid-head{text-align:center;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:5px 0}
+.cal-grid-head.sat,.cal-grid-head.sun{color:var(--sat-color);opacity:.65}
+.cal-grid{display:flex;flex-direction:column;gap:2px}
+.cal-grid-row{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-day{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;aspect-ratio:1;min-height:36px;border-radius:var(--radius-sm);background:transparent;color:var(--text-primary);font-size:.8rem;font-weight:500;cursor:pointer;transition:background var(--transition),color var(--transition),transform 80ms ease;outline:none;-webkit-tap-highlight-color:transparent;user-select:none}
+.cal-day:hover:not(.range-start):not(.range-end):not(.in-range){background:var(--bg-panel);transform:scale(1.06)}
+.cal-day:active{transform:scale(.94)}
+.cal-day:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.cal-day.other{opacity:.2;pointer-events:none}
+.cal-day.sat .day-num,.cal-day.sun .day-num{color:var(--sat-color)}
+.cal-day.today{background:var(--today-bg)!important}
+.cal-day.today .day-num{color:var(--today-color)!important;font-weight:700}
+.cal-day.today::before{content:'';position:absolute;inset:0;border-radius:var(--radius-sm);border:1.5px solid var(--today-border);pointer-events:none}
+.cal-day.range-start{background:var(--range-start)!important;border-radius:var(--radius-sm) 0 0 var(--radius-sm);animation:pulseGlow 1.2s ease .1s 1}
+.cal-day.range-end{background:var(--range-end)!important;border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+.cal-day.range-start .day-num,.cal-day.range-end .day-num{color:#fff!important;font-weight:700}
+.cal-day.single{background:var(--range-start)!important;border-radius:var(--radius-sm)!important}
+.cal-day.single .day-num{color:#fff!important;font-weight:700}
+.cal-day.in-range{background:var(--range-mid)!important;border-top:1px solid var(--range-mid-border);border-bottom:1px solid var(--range-mid-border);border-radius:0}
+.day-num{line-height:1}
+.day-holiday{font-size:.52rem;line-height:1;margin-top:1px}
+.day-note-dot{position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--note-dot);animation:noteDot .3s var(--transition-spring) both}
+
+/* ---- Notes Panel ---- */
+.notes-panel{display:flex;flex-direction:column;background:var(--bg-panel);border-left:1px solid var(--border);min-width:0;overflow:hidden}
+.notes-panel__header{display:flex;align-items:center;justify-content:space-between;padding:.75rem .875rem .5rem;border-bottom:1px solid var(--border)}
+.notes-panel__title{display:flex;align-items:center;gap:.4rem;font-size:.66rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+.notes-panel__clr{width:21px;height:21px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text-muted);transition:all var(--transition)}
+.notes-panel__clr:hover{background:var(--border);color:var(--text-secondary)}
+.notes-panel__empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem 1.25rem;text-align:center;gap:.5rem;color:var(--text-muted)}
+.notes-panel__empty-icon{width:48px;height:48px;border-radius:50%;background:var(--bg-card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:.2rem}
+.notes-panel__empty p{font-size:.76rem;font-weight:500;color:var(--text-secondary);line-height:1.4}
+.notes-panel__hint{font-size:.67rem!important;color:var(--text-muted)!important}
+.notes-panel__editor{display:flex;flex-direction:column;gap:.625rem;padding:.75rem .875rem;flex:1}
+.notes-range-info{display:flex;align-items:baseline;justify-content:space-between;gap:.375rem}
+.notes-range-label{font-family:var(--font-display);font-size:.9rem;font-weight:600;color:var(--text-primary);line-height:1.2}
+.notes-day-count{font-size:.65rem;color:var(--accent);font-weight:600;background:var(--accent-pale);padding:2px 6px;border-radius:20px;white-space:nowrap}
+.notes-textarea-wrap{position:relative;flex:1}
+.notes-textarea{width:100%;min-height:110px;padding:.55rem .65rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:.8rem;line-height:1.85;resize:vertical;outline:none;transition:border-color var(--transition),box-shadow var(--transition)}
+.notes-textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-pale)}
+.notes-textarea::placeholder{color:var(--text-muted);font-style:italic}
+.notes-actions{display:flex;align-items:center;justify-content:space-between;gap:.375rem}
+.notes-hint-key{font-size:.62rem;color:var(--text-muted);font-family:var(--font-mono)}
+.notes-btn-row{display:flex;gap:.375rem}
+.notes-btn{padding:.3rem .75rem;border-radius:var(--radius-xs);font-size:.72rem;font-weight:600;transition:all var(--transition)}
+.notes-btn.ghost{color:var(--text-muted);border:1px solid var(--border)}
+.notes-btn.ghost:hover{border-color:var(--border-strong);color:var(--text-secondary)}
+.notes-btn.save{background:var(--accent);color:var(--text-inverted);display:flex;align-items:center;gap:.3rem}
+.notes-btn.save:hover{background:var(--accent-dark);transform:translateY(-1px)}
+.notes-btn.saved{background:var(--note-dot)!important}
+.notes-list{border-top:1px solid var(--border);padding:.625rem .875rem;overflow-y:auto;max-height:170px}
+.notes-list-title{font-size:.62rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.4rem}
+.notes-list-items{display:flex;flex-direction:column;gap:3px}
+.note-item{display:flex;align-items:center;gap:.4rem;padding:4px 7px;border-radius:var(--radius-xs);background:var(--bg-card);border:1px solid var(--border);animation:fadeIn .2s ease both}
+.note-item__date{font-family:var(--font-mono);font-size:.62rem;color:var(--accent);font-weight:500;flex-shrink:0;min-width:28px}
+.note-item__text{font-size:.7rem;color:var(--text-secondary);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.note-item__del{color:var(--text-muted);width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:0;transition:all var(--transition)}
+.note-item:hover .note-item__del{opacity:1}
+.note-item__del:hover{background:var(--border);color:var(--text-primary)}
+
+/* ---- Year strip ---- */
+.year-strip{display:flex;align-items:center;gap:.625rem;padding:.4rem .875rem;background:var(--bg-panel);border-top:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.year-strip::-webkit-scrollbar{display:none}
+.year-strip__year{font-family:var(--font-mono);font-size:.67rem;font-weight:600;color:var(--text-muted);letter-spacing:.06em;flex-shrink:0}
+.year-strip__months{display:flex;gap:2px;flex:1}
+.ys-month{flex:1;min-width:27px;padding:3px 2px;border-radius:var(--radius-xs);font-size:.6rem;font-weight:500;letter-spacing:.02em;color:var(--text-muted);text-align:center;transition:all var(--transition);white-space:nowrap}
+.ys-month:hover{background:var(--bg-card);color:var(--text-primary)}
+.ys-month.active{background:var(--accent)!important;color:var(--text-inverted)!important;font-weight:700}
+.ys-month.thismonth{color:var(--accent);font-weight:700}
+.year-strip__ynav{display:flex;gap:2px;flex-shrink:0}
+.year-strip__ynav button{width:21px;height:21px;border-radius:var(--radius-xs);display:flex;align-items:center;justify-content:center;color:var(--text-muted);transition:all var(--transition)}
+.year-strip__ynav button:hover{background:var(--bg-card);color:var(--text-primary)}
+
+/* ---- Footer ---- */
+.chr-footer{display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.875rem;font-size:.63rem;color:var(--text-muted);letter-spacing:.04em}
+
+/* ---- Responsive ---- */
+@media(max-width:899px){
+  .chr-layout{grid-template-columns:1fr;grid-template-rows:auto 1fr auto;min-height:unset}
+  .chr-center{border-left:none;border-right:none;border-top:1px solid var(--border)}
+  .notes-panel{border-left:none;border-top:1px solid var(--border);max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1)}
+  .notes-panel.mobile-open{max-height:420px}
+  .chr-topbar__notes-toggle{display:flex}
+}
+@media(min-width:900px){
+  .chr-topbar__notes-toggle{display:none}
+  .notes-panel{display:flex!important;max-height:none!important}
+  .hero-spiral{flex-direction:column;height:90%;width:18px;top:50%;left:0;transform:translateY(-50%)}
+  .hero-spiral__ring{width:13px;height:13px}
+  .hero-panel{min-height:unset;width:220px;flex-shrink:0}
+  .hero-title-block{bottom:unset;right:unset;top:0;left:0;clip-path:polygon(0% 0%,100% 0%,82% 100%,0% 100%);text-align:left;padding:1.125rem 1.875rem .875rem 1.125rem}
+  .hero-nav--prev{left:50%;top:.625rem;transform:translateX(-50%) rotate(90deg)}
+  .hero-nav--next{left:50%;top:unset;bottom:.625rem;transform:translateX(-50%) rotate(90deg)}
+  .hero-nav--prev:hover{transform:translateX(-50%) rotate(90deg) scale(1.1)}
+  .hero-nav--next:hover{transform:translateX(-50%) rotate(90deg) scale(1.1)}
+  .hero-img-wrap{min-height:unset;height:100%}
+}
+@media(max-width:480px){
+  .chr-topbar__sub{display:none}
+  .chr-kb-hint{display:none}
+  .chr-main{padding:.75rem .5rem .75rem}
+  .day-holiday{display:none}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// =====================================================
+// CHRONICLE CALENDAR — Vanilla JS implementation
+// (No build step required — open directly in browser)
+// =====================================================
+
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+const MONTH_IMAGES = [
+  {url:'https://images.unsplash.com/photo-1491002052546-bf38f186af56?w=800&q=80',credit:'Winter Mountains'},
+  {url:'https://images.unsplash.com/photo-1612099453745-c3ed39ac5dab?w=800&q=80',credit:'Frozen Forest'},
+  {url:'https://images.unsplash.com/photo-1522748906645-95d8adfd52c7?w=800&q=80',credit:'Spring Blossoms'},
+  {url:'https://images.unsplash.com/photo-1462275646964-a0e3386b89fa?w=800&q=80',credit:'April Flowers'},
+  {url:'https://images.unsplash.com/photo-1498429089284-41f8cf3ffd39?w=800&q=80',credit:'May Meadows'},
+  {url:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80',credit:'Summer Beach'},
+  {url:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',credit:'Mountain Peaks'},
+  {url:'https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=800&q=80',credit:'Late Summer'},
+  {url:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80',credit:'Autumn Forest'},
+  {url:'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&q=80',credit:'Fall Foliage'},
+  {url:'https://images.unsplash.com/photo-1477511801984-4ad318ed9846?w=800&q=80',credit:'November Mist'},
+  {url:'https://images.unsplash.com/photo-1544535830-9df3f56fff6a?w=800&q=80',credit:'Winter Snow'},
+];
+
+const FIXED_HOLIDAYS = {
+  '01-01':{name:"New Year's Day",e:'🎆'},'02-14':{name:"Valentine's",e:'💝'},
+  '03-17':{name:"St. Patrick's",e:'☘️'},'04-01':{name:"April Fools'",e:'🃏'},
+  '04-22':{name:'Earth Day',e:'🌍'},'05-05':{name:'Cinco de Mayo',e:'🎉'},
+  '06-19':{name:'Juneteenth',e:'✊'},'07-04':{name:'Independence Day',e:'🇺🇸'},
+  '10-31':{name:'Halloween',e:'🎃'},'11-11':{name:"Veterans Day",e:'🎖️'},
+  '12-24':{name:'Christmas Eve',e:'🎁'},'12-25':{name:'Christmas',e:'🎄'},
+  '12-31':{name:"New Year's Eve",e:'🥂'},
+};
+const FLOATING = {
+  2025:{'01-20':{name:'MLK Day',e:'✊'},'05-26':{name:'Memorial Day',e:'🎗️'},'09-01':{name:'Labor Day',e:'⚙️'},'11-27':{name:'Thanksgiving',e:'🦃'}},
+  2026:{'01-19':{name:'MLK Day',e:'✊'},'05-25':{name:'Memorial Day',e:'🎗️'},'09-07':{name:'Labor Day',e:'⚙️'},'11-26':{name:'Thanksgiving',e:'🦃'}},
+};
+
+function getHoliday(date) {
+  const mm = String(date.getMonth()+1).padStart(2,'0');
+  const dd = String(date.getDate()).padStart(2,'0');
+  const key = mm+'-'+dd;
+  const y = date.getFullYear();
+  return FIXED_HOLIDAYS[key] || FLOATING[y]?.[key] || null;
+}
+
+function fmtKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function fmtDisplay(d){return MONTHS_SHORT[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear()}
+function sameDay(a,b){return a&&b&&a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate()}
+function startOf(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
+function inRange(d,s,e){if(!s||!e)return false;const sd=startOf(s),ed=startOf(e),dd=startOf(d);const mn=sd<=ed?sd:ed,mx=sd<=ed?ed:sd;return dd>=mn&&dd<=mx}
+function fmtRange(s,e){if(!s)return '';if(!e||sameDay(s,e))return fmtDisplay(s);const a=s<=e?s:e,b=s<=e?e:s;return MONTHS_SHORT[a.getMonth()]+' '+a.getDate()+' – '+MONTHS_SHORT[b.getMonth()]+' '+b.getDate()+', '+b.getFullYear()}
+function daysBetween(s,e){if(!s||!e)return 0;return Math.abs(Math.round((startOf(e)-startOf(s))/(864e5)))}
+
+function buildGrid(year,month){
+  const first=new Date(year,month,1);
+  let offset=first.getDay()-1; if(offset<0)offset=6;
+  const start=new Date(first); start.setDate(1-offset);
+  const days=[];
+  for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);days.push(d);}
+  return days;
+}
+
+// State
+const today=new Date();
+let state={
+  year:today.getFullYear(), month:today.getMonth(),
+  rangeStart:null, rangeEnd:null, hoverDate:null, selectingEnd:false,
+  theme:'glacier', notes:{}, notesOpen:false, themeMenuOpen:false,
+};
+
+const THEMES=['glacier','ember','forest','obsidian'];
+const THEME_META={glacier:{label:'Glacier',dot:'#2563eb',bg:'#0d1f3c'},ember:{label:'Ember',dot:'#f97316',bg:'#0d0500'},forest:{label:'Forest',dot:'#22c55e',bg:'#051009'},obsidian:{label:'Obsidian',dot:'#e4e4e7',bg:'#000'}};
+
+// Load persisted data
+try{state.theme=localStorage.getItem('chr_theme')||'glacier';}catch{}
+try{state.notes=JSON.parse(localStorage.getItem('chr_notes')||'{}');}catch{}
+
+function saveNotes(){try{localStorage.setItem('chr_notes',JSON.stringify(state.notes));}catch{}}
+function saveTheme(){try{localStorage.setItem('chr_theme',state.theme);}catch{}}
+
+function render(){
+  const {year,month,rangeStart,rangeEnd,hoverDate,selectingEnd,theme,notes,notesOpen,themeMenuOpen}=state;
+  const effEnd=selectingEnd&&hoverDate?hoverDate:rangeEnd;
+  const imgData=MONTH_IMAGES[month];
+  const selectionActive=!!rangeStart;
+  const rangeLabel=fmtRange(rangeStart,effEnd);
+
+  // Apply theme
+  document.documentElement.setAttribute('data-theme',theme);
+
+  const app=document.getElementById('app');
+  app.innerHTML=`
+<div class="chr-app">
+  <!-- Topbar -->
+  <header class="chr-topbar">
+    <div class="chr-topbar__brand">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span class="chr-topbar__name">Chronicle</span>
+      <span class="chr-topbar__sub">Calendar</span>
+    </div>
+    <div class="chr-topbar__center">
+      ${selectionActive&&rangeLabel?`
+      <div class="chr-topbar__selection">
+        <span class="chr-topbar__sel-label">${rangeLabel}</span>
+        ${!selectingEnd&&rangeEnd?`<button class="chr-topbar__sel-clear" id="clearSel" aria-label="Clear"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`:''}
+        ${selectingEnd?`<span class="chr-topbar__sel-hint">Select end date…</span>`:''}
+      </div>`:''}
+    </div>
+    <div class="chr-topbar__actions">
+      <button class="chr-topbar__today-btn" id="goToday">Today</button>
+      <button class="chr-topbar__notes-toggle${notesOpen?' active':''}" id="toggleNotes" title="Notes">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        ${selectionActive?`<span class="chr-notes-dot"></span>`:''}
+      </button>
+      <!-- Theme switcher -->
+      <div class="theme-sw">
+        <button class="theme-sw__trigger" id="themeToggle">
+          <span class="theme-sw__dot" style="background:${THEME_META[theme].dot}"></span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        </button>
+        <div class="theme-sw__menu${themeMenuOpen?' open':''}">
+          <div class="theme-sw__menu-title">Theme</div>
+          ${THEMES.map(t=>`<button class="theme-sw__option${t===theme?' active':''}" data-theme-pick="${t}">
+            <span class="theme-sw__swatch" style="background:${THEME_META[t].bg};border:2px solid ${THEME_META[t].dot}"></span>
+            <span>${THEME_META[t].label}</span>
+            ${t===theme?`<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" style="margin-left:auto"><polyline points="20 6 9 17 4 12"/></svg>`:''}
+          </button>`).join('')}
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="chr-main">
+    <div class="chr-card">
+      <div class="chr-layout">
+
+        <!-- Hero -->
+        <div class="hero-panel">
+          <div class="hero-spiral">${Array(13).fill('<div class="hero-spiral__ring"></div>').join('')}</div>
+          <div class="hero-img-wrap">
+            <img src="${imgData.url}" alt="${MONTHS[month]} ${year}" class="hero-img${''}" id="heroImg" />
+            <div class="hero-img-skeleton" id="heroSkeleton"></div>
+            <div class="hero-overlay"></div>
+          </div>
+          <div class="hero-title-block">
+            <div class="hero-year">${year}</div>
+            <div class="hero-month">${MONTHS[month]}</div>
+            <div class="hero-credit">${imgData.credit}</div>
+          </div>
+          <button class="hero-nav hero-nav--prev" id="heroPrev" aria-label="Prev month">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="hero-nav hero-nav--next" id="heroNext" aria-label="Next month">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+
+        <!-- Center -->
+        <div class="chr-center">
+          <div class="chr-center__header">
+            <div class="chr-center__month-title">
+              <span class="chr-center__month">${MONTHS[month]}</span>
+              <span class="chr-center__year">${year}</span>
+            </div>
+            <div class="chr-center__hdr-actions">
+              <button class="chr-nav-btn" id="prevMonthBtn" aria-label="Prev">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <button class="chr-nav-btn" id="nextMonthBtn" aria-label="Next">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="chr-kb-hint"><span>Click to start · click again to end range</span></div>
+          <div class="chr-grid-anim" id="gridAnim">
+            ${renderGrid(year,month,rangeStart,effEnd,notes)}
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="notes-panel${notesOpen?' mobile-open':''}" id="notesPanel">
+          ${renderNotes(rangeStart,rangeEnd,effEnd,year,month,notes,selectingEnd)}
+        </div>
+      </div>
+
+      <!-- Year strip -->
+      <div class="year-strip">
+        <div class="year-strip__year">${year}</div>
+        <div class="year-strip__months">
+          ${MONTHS_SHORT.map((m,i)=>`<button class="ys-month${i===month?' active':''}${i===today.getMonth()&&year===today.getFullYear()?' thismonth':''}" data-ys-month="${i}">${m}</button>`).join('')}
+        </div>
+        <div class="year-strip__ynav">
+          <button id="ysYearPrev"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <button id="ysYearNext"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="chr-footer"><span>Chronicle Calendar</span><span class="chr-footer__dot">·</span><span>Data stored locally in your browser</span></footer>
+</div>`;
+
+  // Image load
+  const img=document.getElementById('heroImg');
+  const skel=document.getElementById('heroSkeleton');
+  if(img){img.onload=()=>{img.classList.add('loaded');if(skel)skel.style.display='none';}; if(img.complete){img.classList.add('loaded');if(skel)skel.style.display='none';}}
+
+  // Events
+  document.getElementById('prevMonthBtn')?.addEventListener('click',prevMonth);
+  document.getElementById('nextMonthBtn')?.addEventListener('click',nextMonth);
+  document.getElementById('heroPrev')?.addEventListener('click',prevMonth);
+  document.getElementById('heroNext')?.addEventListener('click',nextMonth);
+  document.getElementById('goToday')?.addEventListener('click',goToday);
+  document.getElementById('toggleNotes')?.addEventListener('click',()=>{state.notesOpen=!state.notesOpen;render();});
+  document.getElementById('clearSel')?.addEventListener('click',clearSel);
+  document.getElementById('themeToggle')?.addEventListener('click',(e)=>{e.stopPropagation();state.themeMenuOpen=!state.themeMenuOpen;render();});
+  document.querySelectorAll('[data-theme-pick]').forEach(b=>b.addEventListener('click',()=>{state.theme=b.dataset.themePick;state.themeMenuOpen=false;saveTheme();render();}));
+  document.querySelectorAll('[data-ys-month]').forEach(b=>b.addEventListener('click',()=>{state.month=parseInt(b.dataset.ysMonth);render();}));
+  document.getElementById('ysYearPrev')?.addEventListener('click',()=>{state.year--;render();});
+  document.getElementById('ysYearNext')?.addEventListener('click',()=>{state.year++;render();});
+
+  // Day clicks & hover
+  document.querySelectorAll('.cal-day[data-date]').forEach(btn=>{
+    btn.addEventListener('click',()=>dayClick(btn.dataset.date));
+    btn.addEventListener('mouseenter',()=>dayHover(btn.dataset.date));
+    btn.addEventListener('mouseleave',()=>dayHover(null));
+  });
+
+  // Notes events
+  document.getElementById('saveNoteBtn')?.addEventListener('click',saveNote);
+  document.getElementById('clearNoteBtn')?.addEventListener('click',clearNote);
+  document.querySelectorAll('[data-del-note]').forEach(b=>b.addEventListener('click',()=>{delete state.notes[b.dataset.delNote];saveNotes();render();}));
+  const ta=document.getElementById('noteTextarea');
+  if(ta){ta.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='s'){e.preventDefault();saveNote();}});}
+
+  // Close theme menu on outside click
+  if(themeMenuOpen){
+    document.addEventListener('click',function h(){state.themeMenuOpen=false;render();document.removeEventListener('click',h);},{once:true});
+  }
+}
+
+function renderGrid(year,month,rangeStart,effEnd,notes){
+  const days=buildGrid(year,month);
+  const rows=[];
+  for(let i=0;i<42;i+=7){rows.push(days.slice(i,i+7));}
+  let html=`<div class="cal-grid-wrapper"><div class="cal-grid-header">`;
+  DAYS.forEach((d,i)=>html+=`<div class="cal-grid-head${i>=5?' sat':''}">${d}</div>`);
+  html+=`</div><div class="cal-grid">`;
+  rows.forEach(row=>{
+    html+=`<div class="cal-grid-row">`;
+    row.forEach(date=>{
+      const inMonth=date.getMonth()===month;
+      const key=fmtKey(date);
+      const isToday=sameDay(date,today);
+      const dow=date.getDay();
+      const isSat=dow===6,isSun=dow===0;
+      const holiday=getHoliday(date);
+      const hasNote=inMonth&&notes[key]&&notes[key].trim();
+      let isStart=rangeStart&&sameDay(date,rangeStart)&&(effEnd?!sameDay(rangeStart,effEnd):true);
+      let isEnd=rangeStart&&effEnd&&sameDay(date,(rangeStart<=effEnd?effEnd:rangeStart));
+      let isSingle=rangeStart&&effEnd&&sameDay(rangeStart,effEnd)&&sameDay(date,rangeStart);
+      let inRng=rangeStart&&effEnd&&inRange(date,rangeStart,effEnd)&&!sameDay(date,(rangeStart<=effEnd?rangeStart:effEnd))&&!sameDay(date,(rangeStart<=effEnd?effEnd:rangeStart));
+      if(rangeStart&&effEnd&&rangeStart>effEnd){
+        isStart=sameDay(date,effEnd);isEnd=sameDay(date,rangeStart);
+        isSingle=sameDay(rangeStart,effEnd)&&sameDay(date,rangeStart);
+      }
+      const cls=['cal-day',
+        !inMonth?'other':'',
+        isToday?'today':'',
+        isSat?'sat':'',isSun?'sun':'',
+        isSingle?'single':isStart?'range-start':isEnd?'range-end':inRng?'in-range':'',
+        holiday&&inMonth?'has-holiday':'',
+      ].filter(Boolean).join(' ');
+      html+=`<button class="${cls}" data-date="${key}" ${!inMonth?'tabindex="-1"':''} aria-label="${date.toDateString()}${holiday?' — '+holiday.name:''}">
+        <span class="day-num">${date.getDate()}</span>
+        ${holiday&&inMonth?`<span class="day-holiday">${holiday.e}</span>`:''}
+        ${hasNote?`<span class="day-note-dot"></span>`:''}
+      </button>`;
+    });
+    html+=`</div>`;
+  });
+  html+=`</div></div>`;
+  return html;
+}
+
+function renderNotes(rangeStart,rangeEnd,effEnd,year,month,notes,selectingEnd){
+  const selKey=rangeStart?fmtKey(rangeStart):null;
+  const curNote=selKey?notes[selKey]||'':'';
+  const monthPrefix=year+'-'+String(month+1).padStart(2,'0');
+  const monthNotes=Object.entries(notes).filter(([k])=>k.startsWith(monthPrefix)).sort(([a],[b])=>a.localeCompare(b));
+  const dayCount=rangeStart&&rangeEnd&&!selectingEnd?daysBetween(rangeStart,rangeEnd):0;
+  const isSingle=rangeStart&&rangeEnd&&sameDay(rangeStart,rangeEnd);
+
+  let html=`<div class="notes-panel__header">
+    <div class="notes-panel__title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Notes</div>
+    ${rangeStart?`<button class="notes-panel__clr" id="notesClr"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`:''}
+  </div>`;
+
+  if(!rangeStart){
+    html+=`<div class="notes-panel__empty">
+      <div class="notes-panel__empty-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      <p>Select a date to add a note</p>
+      <p class="notes-panel__hint">Click once to start, again to set range</p>
+    </div>`;
+  } else {
+    const label=fmtRange(rangeStart,rangeEnd&&!selectingEnd?rangeEnd:null)||fmtDisplay(rangeStart);
+    html+=`<div class="notes-panel__editor">
+      <div class="notes-range-info">
+        <div class="notes-range-label">${label}</div>
+        ${dayCount>1?`<div class="notes-day-count">${dayCount}d</div>`:''}
+      </div>
+      <div class="notes-textarea-wrap">
+        <textarea class="notes-textarea" id="noteTextarea" placeholder="Add a note…" rows="5">${curNote.replace(/</g,'&lt;')}</textarea>
+      </div>
+      <div class="notes-actions">
+        <span class="notes-hint-key">⌘S save</span>
+        <div class="notes-btn-row">
+          ${curNote?`<button class="notes-btn ghost" id="clearNoteBtn">Clear</button>`:''}
+          <button class="notes-btn save" id="saveNoteBtn">Save Note</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  if(monthNotes.length>0){
+    html+=`<div class="notes-list">
+      <div class="notes-list-title">${MONTHS_SHORT[month]} Notes (${monthNotes.length})</div>
+      <div class="notes-list-items">
+        ${monthNotes.map(([k,n])=>`<div class="note-item">
+          <span class="note-item__date">${k.slice(8)}</span>
+          <span class="note-item__text">${n.length>55?n.slice(0,52)+'…':n}</span>
+          <button class="note-item__del" data-del-note="${k}"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }
+  return html;
+}
+
+function prevMonth(){if(state.month===0){state.month=11;state.year--;}else state.month--;render();}
+function nextMonth(){if(state.month===11){state.month=0;state.year++;}else state.month++;render();}
+function goToday(){state.year=today.getFullYear();state.month=today.getMonth();render();}
+function clearSel(){state.rangeStart=null;state.rangeEnd=null;state.selectingEnd=false;state.hoverDate=null;render();}
+
+function dayClick(dateStr){
+  const [y,m,d]=dateStr.split('-').map(Number);
+  const date=new Date(y,m-1,d);
+  if(!state.selectingEnd||!state.rangeStart){
+    state.rangeStart=date;state.rangeEnd=null;state.selectingEnd=true;
+  } else {
+    state.rangeEnd=date;state.selectingEnd=false;
+  }
+  render();
+}
+
+function dayHover(dateStr){
+  if(!dateStr){state.hoverDate=null;}else{
+    const [y,m,d]=dateStr.split('-').map(Number);
+    state.hoverDate=new Date(y,m-1,d);
+  }
+  if(state.selectingEnd){
+    // Re-render grid only for performance
+    const ga=document.getElementById('gridAnim');
+    if(ga)ga.innerHTML=renderGrid(state.year,state.month,state.rangeStart,state.selectingEnd&&state.hoverDate?state.hoverDate:state.rangeEnd,state.notes);
+    document.querySelectorAll('.cal-day[data-date]').forEach(btn=>{
+      btn.addEventListener('click',()=>dayClick(btn.dataset.date));
+      btn.addEventListener('mouseenter',()=>dayHover(btn.dataset.date));
+      btn.addEventListener('mouseleave',()=>dayHover(null));
+    });
+  }
+}
+
+function saveNote(){
+  const ta=document.getElementById('noteTextarea');
+  if(!ta||!state.rangeStart)return;
+  const key=fmtKey(state.rangeStart);
+  const val=ta.value.trim();
+  if(val){state.notes[key]=val;}else{delete state.notes[key];}
+  saveNotes();
+  const btn=document.getElementById('saveNoteBtn');
+  if(btn){btn.textContent='✓ Saved';btn.classList.add('saved');setTimeout(()=>{btn.textContent='Save Note';btn.classList.remove('saved');},1800);}
+  // Update note dots
+  const ga=document.getElementById('gridAnim');
+  if(ga){ga.innerHTML=renderGrid(state.year,state.month,state.rangeStart,state.selectingEnd&&state.hoverDate?state.hoverDate:state.rangeEnd,state.notes);
+    document.querySelectorAll('.cal-day[data-date]').forEach(btn=>{
+      btn.addEventListener('click',()=>dayClick(btn.dataset.date));
+      btn.addEventListener('mouseenter',()=>dayHover(btn.dataset.date));
+      btn.addEventListener('mouseleave',()=>dayHover(null));
+    });
+  }
+}
+
+function clearNote(){
+  if(!state.rangeStart)return;
+  const key=fmtKey(state.rangeStart);
+  delete state.notes[key];saveNotes();render();
+}
+
+// Notes panel clr
+document.addEventListener('click',e=>{if(e.target.closest('#notesClr'))clearSel();});
+
+// Keyboard
+window.addEventListener('keydown',e=>{
+  if((e.metaKey||e.ctrlKey)&&e.key==='ArrowRight'){e.preventDefault();nextMonth();}
+  if((e.metaKey||e.ctrlKey)&&e.key==='ArrowLeft'){e.preventDefault();prevMonth();}
+  if(e.key==='Escape')clearSel();
+});
+
+// Init
+render();
+</script>
+</body>
+</html>

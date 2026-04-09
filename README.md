@@ -1,92 +1,63 @@
-# Planora
-# Chronicle Calendar App
+# Chronicle Calendar
 
-## 📅 Overview
-
-Chronicle is a modern, interactive wall calendar web application built using **HTML, CSS, and JavaScript**.
-It provides a clean UI with features like date range selection, notes, holidays, dark mode, and yearly overview.
+A premium interactive wall calendar React component — built to stand out.
 
 ## ✨ Features
 
-* 📆 Monthly Calendar View
-* 📅 Date Range Selection
-* 📝 Add Notes & Memos
-* 🌙 Light / Dark Mode Toggle
-* 📊 Year Overview Calendar
-* 🎉 Holiday Indicators
-* 🔍 Today Quick Navigation
-* 💾 Export Notes & Dates
-* ⌨️ Keyboard Shortcuts
-* 📱 Responsive Design
+- **Wall Calendar Aesthetic** — Physical paper calendar feel with a spiral-bound top, hero image panel, and clean grid
+- **Day Range Selector** — Click a start date, click an end date. Beautiful animated highlight sweep across the range
+- **Smart Notes System** — Per-date notes with auto-save to localStorage; notes indicator dots on the grid
+- **Month Image Carousel** — Curated hero images per month (can be swapped out easily)
+- **Theme Switcher** — 4 hand-crafted themes: Glacier (default), Ember, Forest, Obsidian
+- **Flip Page Animation** — Calendar pages flip with a 3D CSS animation when changing months
+- **Holiday Markers** — Major holidays auto-labeled in the grid
+- **Fully Responsive** — Desktop: side-by-side layout. Mobile: stacked with bottom sheet notes
+- **Mini-map** — Year overview strip at the bottom for quick month jumping
+- **Keyboard Navigation** — Arrow keys to navigate months, Escape to clear selection
 
-The application allows users to select dates, save notes, and track events easily in a visually appealing calendar interface. 
+## 🚀 Getting Started
 
----
-
-## 🛠️ Technologies Used
-
-* HTML5
-* CSS3
-* JavaScript (Vanilla JS)
-* Google Fonts
-
----
-
-## 📂 Project Structure
-
-```
-chronicle_calendar.html
-README.md
+```bash
+npm install
+npm start
 ```
 
-No additional setup or dependencies required.
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
----
+## 🏗 Architecture
 
-## ▶️ How to Run
+```
+src/
+  components/
+    Calendar.jsx          # Main orchestrator
+    CalendarGrid.jsx      # Month grid with range selection
+    HeroPanel.jsx         # Image + month title panel
+    NotesPanel.jsx        # Notes editor + list
+    ThemeSwitcher.jsx     # Theme selector
+    YearStrip.jsx         # Year overview navigation
+    HolidayBadge.jsx      # Holiday label component
+  hooks/
+    useCalendarState.js   # All calendar state + logic
+    useNotes.js           # Notes CRUD with localStorage
+    useTheme.js           # Theme management
+  utils/
+    dates.js              # Date helpers using date-fns
+    holidays.js           # Holiday definitions
+    images.js             # Month image map
+  styles/
+    themes.css            # CSS custom property themes
+    global.css            # Resets + base styles
+```
 
-1. Download the project file
-2. Open `chronicle_calendar.html` in any browser
-3. Start using the calendar
+## 🎨 Design Decisions
 
-That's it — no installation needed.
+- **Font pairing**: Playfair Display (display) + DM Sans (body) — editorial, premium feel
+- **Motion**: Framer Motion for page-flip and range-sweep; CSS transitions for micro-interactions
+- **No backend**: All data persisted via localStorage
+- **Color system**: 4 themes expressed as CSS custom property sets — zero JS theme logic
 
----
+## 📱 Responsive Breakpoints
 
-## 🎮 Keyboard Shortcuts
-
-| Shortcut     | Action          |
-| ------------ | --------------- |
-| Ctrl + ← / → | Navigate months |
-| T            | Go to Today     |
-| Esc          | Clear selection |
-| Ctrl + Enter | Save note       |
-
-These shortcuts improve navigation and productivity. 
-
----
-
-## 📌 Main Functionalities
-
-* Select start and end dates
-* Add notes for dates
-* View holidays
-* Toggle dark mode
-* Export calendar data
-* View full year overview
-
----
-
-## 📸 Preview
-
-Chronicle provides a modern wall-calendar style interface with clean typography and smooth animations.
-
----
-
-## 🚀 Future Improvements
-
-* Event reminders
-* Google Calendar sync
-* Drag & drop events
-* Multiple themes
-
+- `< 640px`: Mobile — stacked layout, bottom-sheet notes drawer
+- `640–1024px`: Tablet — compact side-by-side
+- `> 1024px`: Desktop — full editorial layout
