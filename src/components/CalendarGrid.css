@@ -1,0 +1,201 @@
+/* ============================================================
+   CALENDAR GRID
+   ============================================================ */
+
+.cal-grid-wrapper {
+  padding: 0 1rem 1rem;
+  flex: 1;
+}
+
+.cal-grid-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 4px;
+}
+
+.cal-grid-head {
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 6px 0;
+}
+
+.cal-grid-head--sat,
+.cal-grid-head--sun {
+  color: var(--sat-color);
+  opacity: 0.7;
+}
+
+.cal-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cal-grid-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+/* ---- Day Button ---- */
+.cal-day {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  min-height: 38px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), transform 80ms ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.cal-day:hover:not(.cal-day--range-start):not(.cal-day--range-end):not(.cal-day--in-range) {
+  background: var(--bg-panel);
+  transform: scale(1.05);
+}
+
+.cal-day:active {
+  transform: scale(0.95);
+}
+
+.cal-day:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* Other month */
+.cal-day--other {
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+/* Weekend */
+.cal-day--sat .cal-day__num,
+.cal-day--sun .cal-day__num {
+  color: var(--sat-color);
+}
+
+/* Today */
+.cal-day--today {
+  background: var(--today-bg) !important;
+}
+
+.cal-day--today .cal-day__num {
+  color: var(--today-color) !important;
+  font-weight: 700;
+}
+
+.cal-day--today::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--today-border);
+  pointer-events: none;
+}
+
+/* Range: start */
+.cal-day--range-start,
+.cal-day[data-range-pos="start"],
+.cal-day[data-range-pos="single"] {
+  background: var(--range-start) !important;
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  animation: pulseGlow 1.5s ease 0.1s 1;
+}
+
+.cal-day[data-range-pos="single"] {
+  border-radius: var(--radius-sm) !important;
+}
+
+.cal-day--range-start .cal-day__num,
+.cal-day[data-range-pos="start"] .cal-day__num,
+.cal-day[data-range-pos="single"] .cal-day__num {
+  color: white !important;
+  font-weight: 700;
+}
+
+/* Range: end */
+.cal-day--range-end,
+.cal-day[data-range-pos="end"] {
+  background: var(--range-end) !important;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.cal-day--range-end .cal-day__num,
+.cal-day[data-range-pos="end"] .cal-day__num {
+  color: white !important;
+  font-weight: 700;
+}
+
+/* Range: in between */
+.cal-day--in-range,
+.cal-day[data-range-pos="mid"] {
+  background: var(--range-mid) !important;
+  border-top: 1px solid var(--range-mid-border);
+  border-bottom: 1px solid var(--range-mid-border);
+  border-radius: 0;
+}
+
+/* Holiday emoji */
+.cal-day__holiday-emoji {
+  font-size: 0.55rem;
+  line-height: 1;
+  margin-top: 1px;
+}
+
+/* Note dot */
+.cal-day__note-dot {
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--note-dot);
+  animation: noteDot 0.3s var(--transition-spring) both;
+}
+
+/* Holiday name tooltip on hover */
+.cal-day--holiday::after {
+  content: attr(aria-label);
+  display: none;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 640px) {
+  .cal-grid-wrapper {
+    padding: 0 0.5rem 0.75rem;
+  }
+
+  .cal-day {
+    min-height: 34px;
+    font-size: 0.78rem;
+  }
+
+  .cal-day__holiday-emoji {
+    display: none;
+  }
+}
+
+@media (min-width: 1200px) {
+  .cal-day {
+    min-height: 46px;
+    font-size: 0.875rem;
+  }
+}

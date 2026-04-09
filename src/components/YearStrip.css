@@ -1,0 +1,83 @@
+/* ============================================================
+   YEAR STRIP
+   ============================================================ */
+
+.year-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg-panel);
+  border-top: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.year-strip::-webkit-scrollbar { display: none; }
+
+.year-strip__year {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+}
+
+.year-strip__months {
+  display: flex;
+  gap: 2px;
+  flex: 1;
+}
+
+.year-strip__month {
+  flex: 1;
+  min-width: 28px;
+  padding: 4px 2px;
+  border-radius: var(--radius-xs);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  text-align: center;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.year-strip__month:hover {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.year-strip__month--active {
+  background: var(--accent) !important;
+  color: var(--text-inverted) !important;
+  font-weight: 700;
+}
+
+.year-strip__month--today {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.year-strip__year-nav {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.year-strip__year-nav button {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: all var(--transition);
+}
+
+.year-strip__year-nav button:hover {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}

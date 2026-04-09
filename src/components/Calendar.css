@@ -1,0 +1,379 @@
+/* ============================================================
+   CHRONICLE CALENDAR — Main Layout
+   ============================================================ */
+
+/* ---- App shell ---- */
+.chr-app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg-app);
+  transition: background 0.4s ease;
+}
+
+/* ---- Top bar ---- */
+.chr-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 1.5rem;
+  height: 50px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  box-shadow: var(--shadow-sm);
+}
+
+.chr-topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.chr-topbar__name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.chr-topbar__sub {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.chr-topbar__center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.chr-topbar__selection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--accent-pale);
+  border: 1px solid var(--range-mid-border);
+  border-radius: 20px;
+  padding: 4px 12px 4px 10px;
+  animation: scaleIn 0.2s var(--transition-spring) both;
+}
+
+.chr-topbar__sel-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent);
+  font-family: var(--font-body);
+}
+
+.chr-topbar__sel-hint {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  animation: fadeIn 0.3s ease both;
+}
+
+.chr-topbar__sel-clear {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+}
+
+.chr-topbar__sel-clear:hover {
+  transform: scale(1.15);
+}
+
+.chr-topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.chr-topbar__today-btn {
+  padding: 4px 12px;
+  border-radius: var(--radius-xs);
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  transition: all var(--transition);
+}
+
+.chr-topbar__today-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.chr-topbar__notes-toggle {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-xs);
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+}
+
+.chr-topbar__notes-toggle--active {
+  background: var(--accent-pale);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.chr-topbar__notes-dot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--note-dot);
+  animation: noteDot 0.3s var(--transition-spring) both;
+}
+
+/* ---- Main ---- */
+.chr-main {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 1.5rem 1rem 1rem;
+}
+
+/* ---- Card ---- */
+.chr-card {
+  width: 100%;
+  max-width: 1100px;
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+  animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  border: 1px solid var(--border);
+}
+
+/* ---- Layout grid ---- */
+.chr-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr 220px;
+  grid-template-rows: 1fr;
+  min-height: 500px;
+}
+
+/* ---- Center (grid panel) ---- */
+.chr-center {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.chr-center__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem 0.5rem;
+}
+
+.chr-center__month-title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.chr-center__month {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.chr-center__year {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.chr-center__header-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.chr-nav-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  transition: all var(--transition);
+}
+
+.chr-nav-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: scale(1.05);
+}
+
+.chr-kb-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0 1rem 0.375rem;
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+  font-family: var(--font-mono);
+}
+
+/* Grid animation on month change */
+.chr-grid-anim {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chr-grid-anim--forward {
+  animation: flipIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: top center;
+}
+
+.chr-grid-anim--back {
+  animation: flipIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: bottom center;
+}
+
+/* ---- Notes wrap (mobile drawer) ---- */
+.chr-notes-wrap {
+  overflow: hidden;
+}
+
+/* ---- Footer ---- */
+.chr-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.chr-footer__dot { opacity: 0.4; }
+
+/* ============================================================
+   RESPONSIVE — Tablet (640–899px)
+   ============================================================ */
+@media (max-width: 899px) {
+  .chr-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    min-height: unset;
+  }
+
+  .chr-center {
+    border-left: none;
+    border-right: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .chr-notes-wrap {
+    max-height: 0;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  .chr-notes-wrap--open {
+    max-height: 400px;
+  }
+
+  /* On mobile, hero is horizontal banner */
+  .chr-topbar__notes-toggle {
+    display: flex;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE — Desktop (900px+)
+   ============================================================ */
+@media (min-width: 900px) {
+  .chr-topbar__notes-toggle {
+    display: none;
+  }
+
+  .chr-notes-wrap {
+    display: block !important;
+    max-height: none !important;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE — Large desktop (1100px+)
+   ============================================================ */
+@media (min-width: 1100px) {
+  .chr-layout {
+    grid-template-columns: 240px 1fr 240px;
+  }
+
+  .chr-center__month {
+    font-size: 1.5rem;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE — Small mobile (< 440px)
+   ============================================================ */
+@media (max-width: 440px) {
+  .chr-main {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .chr-card {
+    border-radius: var(--radius-lg);
+  }
+
+  .chr-topbar {
+    padding: 0 1rem;
+  }
+
+  .chr-topbar__sub {
+    display: none;
+  }
+
+  .chr-kb-hint {
+    display: none;
+  }
+
+  .chr-center__header {
+    padding: 0.75rem 0.75rem 0.375rem;
+  }
+}
